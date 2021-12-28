@@ -10,6 +10,12 @@
     <Filter Include="pch">
       <UniqueIdentifier>{8d1b04fe-90c6-47c5-b8b0-13d4da0f49cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ProtocolTool">
+      <UniqueIdentifier>{bbfb436e-d1c4-46cc-b8ed-426c13588501}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Protocol">
+      <UniqueIdentifier>{f1207607-8e0a-4c03-b0c6-6a08cdf36a09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameServer.cpp">
@@ -18,10 +24,42 @@
     <ClCompile Include="pch.cpp">
       <Filter>pch</Filter>
     </ClCompile>
+    <ClCompile Include="Struct.pb.cc">
+      <Filter>Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="Enum.pb.cc">
+      <Filter>Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="Protocol.pb.cc">
+      <Filter>Protocol</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>pch</Filter>
     </ClInclude>
+    <ClInclude Include="Protocol.pb.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="Struct.pb.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="Enum.pb.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\ProtocolMake\Debug\GenPackets.bat">
+      <Filter>ProtocolTool</Filter>
+    </None>
+    <None Include="..\ProtocolMake\Debug\Protocol.proto">
+      <Filter>ProtocolTool</Filter>
+    </None>
+    <None Include="..\ProtocolMake\Debug\Struct.proto">
+      <Filter>ProtocolTool</Filter>
+    </None>
+    <None Include="..\ProtocolMake\Debug\Enum.proto">
+      <Filter>ProtocolTool</Filter>
+    </None>
   </ItemGroup>
 </Project>

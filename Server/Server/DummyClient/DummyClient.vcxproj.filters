@@ -10,6 +10,12 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{4ae861d6-d991-4167-b24f-54154b07148e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ProtocolTool">
+      <UniqueIdentifier>{8d4db553-0134-4ca6-b798-1649ab825999}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Protocol">
+      <UniqueIdentifier>{e25b1461-f047-4ee4-9339-24ee647cf4b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DummyClient.cpp">
@@ -18,10 +24,42 @@
     <ClCompile Include="pch.cpp">
       <Filter>pch</Filter>
     </ClCompile>
+    <ClCompile Include="Struct.pb.cc">
+      <Filter>Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="Enum.pb.cc">
+      <Filter>Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="Protocol.pb.cc">
+      <Filter>Protocol</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>pch</Filter>
     </ClInclude>
+    <ClInclude Include="Protocol.pb.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="Struct.pb.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="Enum.pb.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\ProtocolMake\Debug\GenPackets.bat">
+      <Filter>ProtocolTool</Filter>
+    </None>
+    <None Include="..\ProtocolMake\Debug\Protocol.proto">
+      <Filter>ProtocolTool</Filter>
+    </None>
+    <None Include="..\ProtocolMake\Debug\Struct.proto">
+      <Filter>ProtocolTool</Filter>
+    </None>
+    <None Include="..\ProtocolMake\Debug\Enum.proto">
+      <Filter>ProtocolTool</Filter>
+    </None>
   </ItemGroup>
 </Project>
