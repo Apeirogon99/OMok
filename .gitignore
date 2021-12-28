@@ -3,6 +3,8 @@
 
 #Google ProtoBuf Folder
 Server/Server/Libraries/
+*.pb.cc
+*.pb.h
 
 ### UnrealEngine ###
 # Visual Studio 2015 user specific files
