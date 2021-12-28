@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="pch">
+      <UniqueIdentifier>{b0b2cdd1-9cfb-4332-a9c8-47debeb4e451}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Main">
-      <UniqueIdentifier>{6add7340-064f-4dbf-8e1d-16cb8de1f247}</UniqueIdentifier>
+      <UniqueIdentifier>{e5f39a4a-5bc4-4f18-a262-0a3fdbe4b07b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utils">
-      <UniqueIdentifier>{33621143-33f0-4643-89fa-efcbb4ca8463}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="pch">
-      <UniqueIdentifier>{8d1b04fe-90c6-47c5-b8b0-13d4da0f49cb}</UniqueIdentifier>
+      <UniqueIdentifier>{4ae861d6-d991-4167-b24f-54154b07148e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameServer.cpp">
+    <ClCompile Include="DummyClient.cpp">
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
