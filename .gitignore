@@ -1,6 +1,11 @@
 # Created by https://www.toptal.com/developers/gitignore/api/unrealengine,visualstudio
 # Edit at https://www.toptal.com/developers/gitignore?templates=unrealengine,visualstudio
 
+#Google ProtoBuf Folder
+Server/Server/Libraries/
+*.pb.cc
+*.pb.h
+
 ### UnrealEngine ###
 # Visual Studio 2015 user specific files
 .vs/
