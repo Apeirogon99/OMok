@@ -6,6 +6,9 @@ Server/Server/Libraries/
 *.pb.cc
 *.pb.h
 
+# Only Server test
+Content/Server/
+
 # Only client test
 Content/Client/
 
