@@ -11,6 +11,7 @@ Content/Server/
 
 # Only client test
 Content/Client/
+Source/OMok/ClientTest/
 
 ### UnrealEngine ###
 # Visual Studio 2015 user specific files
