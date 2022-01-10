@@ -1,10 +1,21 @@
 // GameServer.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 #include "pch.h"
-#include <iostream>
+#include "MyIocpServer.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    //IOCPSERVER -> Session -> PacketSession -> GameSession(key) -> Player -> IO
+
+
+
+    MyIocpServer iocpServer;
+    iocpServer.StartIocpServer();
+
+    getchar();
+
+    iocpServer.CloseIocpServer();
+
+    return 0;
 }
 

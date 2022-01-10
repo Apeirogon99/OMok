@@ -16,11 +16,14 @@
     <Filter Include="Protocol">
       <UniqueIdentifier>{f1207607-8e0a-4c03-b0c6-6a08cdf36a09}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameContent">
+      <UniqueIdentifier>{5ad46b88-d4f5-4172-b8c0-a9165089ef04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{f93ded38-4187-4f16-b9fe-5192333c7f6c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameServer.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>pch</Filter>
     </ClCompile>
@@ -32,6 +35,33 @@
     </ClCompile>
     <ClCompile Include="Protocol.pb.cc">
       <Filter>Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientPacketHandler.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="UserSessionManager.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="GameRoom.cpp">
+      <Filter>GameContent</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUser.cpp">
+      <Filter>GameContent</Filter>
+    </ClCompile>
+    <ClCompile Include="GameServer.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="MyIocpServer.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="MyCompltionKey.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="MyOverlapped.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="UserSession.cpp">
+      <Filter>Main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -46,6 +76,30 @@
     </ClInclude>
     <ClInclude Include="Enum.pb.h">
       <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientPacketHandler.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="UserSessionManager.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUser.h">
+      <Filter>GameContent</Filter>
+    </ClInclude>
+    <ClInclude Include="GameRoom.h">
+      <Filter>GameContent</Filter>
+    </ClInclude>
+    <ClInclude Include="MyIocpServer.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="MyCompltionKey.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="MyOverlapped.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="UserSession.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

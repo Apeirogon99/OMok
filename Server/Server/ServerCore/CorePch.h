@@ -1,6 +1,6 @@
 #pragma once
 
-//´Ù¸¥ ÇÁ·ÎÁ§Æ®¿¡¼­µµ ServerCoreÀÇ Pch¸¦ »ç¿ëÇÒ ¼ö ÀÖµµ·ÏÇÔ
+//ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ServerCoreï¿½ï¿½ Pchï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½
 
 #include "Types.h"
 #include <vector>
@@ -12,5 +12,17 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include <Windows.h>
 #include <iostream>
+
+#include <thread>
+#include <mutex>
+#include <memory>
+
+//ï¿½ï¿½Æ®ï¿½ï¿½Å©
+#include <winsock2.h>
+#include <mswsock.h>
+#include <ws2tcpip.h>
+#pragma comment(lib, "ws2_32.lib")
+
 using namespace std;
