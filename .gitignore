@@ -37,7 +37,7 @@ Source/OMok/ClientTest/
 *.lai
 *.la
 *.a
-*.lib
+#*.lib
 
 # Executables
 *.exe
