@@ -3,8 +3,6 @@
 
 #Google ProtoBuf Folder
 Server/Server/Libraries/
-*.pb.cc
-*.pb.h
 
 # Only Server test
 Content/Server/
