@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "NetworkCore.h"
+#include "PacketHandle.h"
 
 //NetworkCore GNetworkCore;
 
@@ -72,6 +73,10 @@ bool NetworkCore::Connect()
 		return false;
 	}
 
+	/*Protocol::C_LOGIN pkt;
+	pkt.set_id(1);
+	SendData(PacketHandle::MakeSendBuffer(pkt));*/
+
 	return true;
 }
 
@@ -100,6 +105,9 @@ void NetworkCore::DisConnect()
 
 void NetworkCore::SendData(TArray<uint8> data)
 {
+	if (data.Num() == 0)
+		return;
+
 	bool registerSend = false;
 
 	{
@@ -121,11 +129,14 @@ void NetworkCore::RecvData()
 {
 
 	if (false == GetConnect())
+	{
+		Stop();
 		return;
+	}
 
 	uint32 pendingDataSize;
 	while (_clientSocket->HasPendingData(pendingDataSize))
-	{
+	{	
 		int32 Bytes = 0;
 		if (false == _clientSocket->Recv(&_recvBuffer[_writePos], pendingDataSize, Bytes))
 		{
@@ -133,23 +144,23 @@ void NetworkCore::RecvData()
 			Stop();
 		}
 
-		_writePos = Bytes;
-		_readPos = PacketHandle::RecviveData(_recvBuffer);
+		_writePos += Bytes;
+		_readPos += PacketHandle::RecviveData(&_recvBuffer[_readPos], Bytes);
 
-		if (_writePos == _readPos)
-			_writePos = _readPos = 0;
 	}
+
+	if (_writePos == _readPos)
+		_writePos = _readPos = 0;
 
 }
 
 void NetworkCore::SendToData()
 {
-	if (_sendQueue.IsEmpty())
-		return;
-
-	TArray<uint8> data;
-	while (_sendQueue.Dequeue(data))
+	TArray<BYTE> data;
+	while (false == _sendQueue.IsEmpty())
 	{
+		_sendQueue.Dequeue(data);
+
 		int32 Bytes = 0;
 		if (false == _clientSocket->Send(data.GetData(), data.Num(), Bytes))
 		{
@@ -213,6 +224,7 @@ uint32 NetworkCore::Run()
 		//TODO : FIX
 		RecvData();
 
+
 		float TimeBetweenTicks = 0.008f;
 		FDateTime timeEndOfTick = FDateTime::UtcNow();
 		FTimespan tickDuration = timeEndOfTick - timeBeginningOfTick;
@@ -221,8 +233,7 @@ uint32 NetworkCore::Run()
 		if (timeToSleep > 0.f)
 		{
 			FPlatformProcess::Sleep(timeToSleep);
-		}
-		
+		}		
 	}
 
 	return 0;

@@ -63,6 +63,9 @@
     <ClCompile Include="UserSession.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="GameRoomManager.cpp">
+      <Filter>GameContent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -100,6 +103,9 @@
     </ClInclude>
     <ClInclude Include="UserSession.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="GameRoomManager.h">
+      <Filter>GameContent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

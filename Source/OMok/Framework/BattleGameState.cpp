@@ -2,6 +2,7 @@
 
 
 #include "BattleGameState.h"
+#include <OMok/Server/PacketHandle.h>
 
 ABattleGameState::ABattleGameState()
 {
@@ -22,5 +23,4 @@ void ABattleGameState::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Create GameState and NetworkCore"));
 	}
-
 }

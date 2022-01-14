@@ -15,7 +15,7 @@ void GameRoom::Leave(shared_ptr<GameUser> user)
 	_users.erase(user->_userId);
 }
 
-void GameRoom::Broadcast(BYTE* sendBuffer)
+void GameRoom::Broadcast(shared_ptr<BYTE*> sendBuffer)
 {
 	lock_guard<mutex> lockguard(_mutex);
 	for (auto& user : _users)

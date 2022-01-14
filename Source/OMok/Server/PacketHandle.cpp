@@ -30,19 +30,24 @@ void PacketHandle::Init(UWorld* world)
     }
 }
 
-int32 PacketHandle::RecviveData(TArray<uint8> data)
+int32 PacketHandle::RecviveData(BYTE* data, int32 len)
 {
     int32 processLen = 0;
+    int32 dataSize = len;
 
     while (true)
     {
-        if (data.Num() < sizeof(PacketHeader))
+        dataSize -= processLen;
+
+        if (dataSize < sizeof(PacketHeader))
             break;
 
         //TEMP
         PacketHeader header = *(reinterpret_cast<PacketHeader*>(&data[processLen]));
+
+        UE_LOG(LogTemp, Warning, TEXT("ID : %d, SIZE : %d"), header.id,header.size);
         
-        if (data.Num() < header.size)
+        if (dataSize < header.size)
             break;
         
         DecodePacket(&data[processLen], header);
@@ -57,32 +62,36 @@ void PacketHandle::DecodePacket(BYTE* buffer, PacketHeader header)
 {
     switch (header.id)
     {
-    case PKT_C_LOGIN:
-        Handle_C_LOGIN(buffer, header.size);
+    case PKT_S_LOGIN:
+        parsePacket<Protocol::S_LOGIN>(Handle_S_LOGIN,buffer, header.size);
+        break;
+    case PKT_S_ENTER_GAME:
+        parsePacket<Protocol::S_ENTER_GMAE>(Handle_S_ENTER_GAME, buffer, header.size);
+        break;
+    case PKT_S_LEAVE_GAME:
+        parsePacket<Protocol::S_LEAVE_GAME>(Handle_S_LEAVE_GAME, buffer, header.size);
         break;
     default:
         break;
     }
 }
 
-void PacketHandle::EncodePacket()
+bool Handle_S_LOGIN(Protocol::S_LOGIN& pkt)
 {
-    //const uint16 dataSize = static_cast<uint16>(pkt.ByteSizeLong());
-    //const uint16 packetSize = dataSize + sizeof(PacketHeader);
-
-    //SendBufferRef sendBuffer = GSendBufferManager->Open(packetSize);
-    //PacketHeader* header = reinterpret_cast<PacketHeader*>(sendBuffer->Buffer());
-
-    //header->size = packetSize;
-    //header->id = pktId;
-    //ASSERT_CRASH(pkt.SerializeToArray(&header[1], dataSize));
-    //sendBuffer->Close(packetSize);
-
-    //return sendBuffer;
+    UE_LOG(LogTemp, Warning, TEXT("Handle_C_LOGIN - id : %d"),pkt.playerid());
+    return true;
 }
 
-bool Handle_C_LOGIN(BYTE* buffer, int32 len)
+bool Handle_S_ENTER_GAME(Protocol::S_ENTER_GMAE& pkt)
 {
-    //Protocol::S_LOGIN = parsePacket<Protocol::S_LOGIN>(buffer,len);
-    return false;
+    UE_LOG(LogTemp, Warning, TEXT("Handle_C_ENTER_GAME"));
+    
+    return true;
+}
+
+bool Handle_S_LEAVE_GAME(Protocol::S_LEAVE_GAME& pkt)
+{
+    UE_LOG(LogTemp, Warning, TEXT("Handle_C_LEAVE_GAME"));
+    
+    return true;
 }

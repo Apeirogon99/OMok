@@ -1,6 +1,12 @@
 #pragma once
 #include "Protocol.pb.h"
 
+struct PacketHeader
+{
+	uint16 id;
+	uint16 size;
+};
+
 enum 
 {
 	PKT_C_LOGIN = 1,

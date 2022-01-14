@@ -1,15 +1,22 @@
 #include "pch.h"
 #include "UserSession.h"
+#include "UserSessionManager.h"
 #include "ClientPacketHandler.h"
+
+UserSession::~UserSession()
+{
+}
 
 void UserSession::OnConnected()
 {
-
+	//printf("OnConnected UserSessionn", len);
+	GUserSessionManger.Add(static_pointer_cast<UserSession>(shared_from_this()));
 }
 
 void UserSession::OnDisconnected()
 {
-
+	//printf("OnDisconnected UserSessionn", len);
+	GUserSessionManger.Remove(static_pointer_cast<UserSession>(shared_from_this()));
 }
 
 int32 UserSession::OnRecv(BYTE* buffer, int32 len)

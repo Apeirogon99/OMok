@@ -183,6 +183,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="GameRoom.cpp" />
+    <ClCompile Include="GameRoomManager.cpp" />
     <ClCompile Include="GameServer.cpp" />
     <ClCompile Include="GameUser.cpp" />
     <ClCompile Include="MyCompltionKey.cpp" />
@@ -213,6 +214,7 @@
     <ClInclude Include="ClientPacketHandler.h" />
     <ClInclude Include="Enum.pb.h" />
     <ClInclude Include="GameRoom.h" />
+    <ClInclude Include="GameRoomManager.h" />
     <ClInclude Include="GameUser.h" />
     <ClInclude Include="MyCompltionKey.h" />
     <ClInclude Include="MyIocpServer.h" />

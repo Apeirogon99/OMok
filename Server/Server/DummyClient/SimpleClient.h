@@ -1,17 +1,57 @@
 #pragma once
+#include "Protocol.pb.h"
 
 #define BUFSIZE 4096
 
-//¿¡ÄÚ¹öÀüÀÇ ½ÉÇÃ Å¬¶óÀÌ¾ðÆ®
+struct PacketHeader
+{
+	uint16 id;
+	uint16 size;
+};
+
+enum : uint16
+{
+	PKT_C_LOGIN = 1,
+	PKT_S_LOGIN = 2,
+
+	PKT_C_ENTER_GAME = 3,
+	PKT_S_ENTER_GMAE = 4,
+
+	PKT_S_MATCHING_GAME = 5,
+
+	PKT_C_LEAVE_GAME = 6,
+	PKT_S_LEAVE_GAME = 7,
+};
+
+
+//ï¿½ï¿½ï¿½Ú¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®
 class SimpleClient
 {
 public:
-
-	bool ClientInit(uint16 port, const char* ip);
-	bool ConnectStart();
-
+	SimpleClient();
+	virtual ~SimpleClient();
+	bool ClientStart();
+private:
+	bool ClientInit();
 	void RecvThread();
 	void SendThread();
+	shared_ptr<BYTE*> TestSendPacket();
+	int32 TestRecvPacket(BYTE* buffer, int32 len);
+
+	template<typename ProtoType, typename ProtoFunc>
+	static bool TestParsePaketandPrint(ProtoFunc func, BYTE* buffer, int32 len);
+
+	static bool Print_C_LOGIN(Protocol::C_LOGIN& pkt)
+	{
+		cout << pkt.id() << endl;
+		return true;
+	}
+
+	static bool Print_S_LOGIN(Protocol::S_LOGIN& pkt)
+	{
+		cout << pkt.playerid() << ", " << pkt.success() << endl;
+		return true;
+	}
 
 private:
 	SOCKET ClientSocket = INVALID_SOCKET;
@@ -21,8 +61,9 @@ private:
 	bool IssendThreadRun = true;
 
 	//char sendBuffer[BUFSIZE];
-	char recvBuffer[BUFSIZE];
-	atomic<int32> sendPos;
-	atomic<int32> readPos;
+
+	BYTE recvBuffer[4096];
+	int32 writePos = 0;
+	int32 readPos = 0;
 };
 

@@ -1,7 +1,20 @@
 #include "pch.h"
 #include "SimpleClient.h"
 
-bool SimpleClient::ClientInit(uint16 port, const char* ip)
+SimpleClient::SimpleClient()
+{
+	ZeroMemory(recvBuffer, sizeof(recvBuffer));
+}
+
+SimpleClient::~SimpleClient()
+{
+	::closesocket(ClientSocket);
+
+
+	::WSACleanup();
+}
+
+bool SimpleClient::ClientInit()
 {
 	WSADATA wsaData;
 	WORD ver = MAKEWORD(2, 2);
@@ -13,88 +26,187 @@ bool SimpleClient::ClientInit(uint16 port, const char* ip)
 	if (INVALID_SOCKET == ClientSocket)
 		return false;
 
-	printf("���� �ʱ�ȭ\n");
+	u_long on = 1;
+	if (::ioctlsocket(ClientSocket, FIONBIO, &on) == INVALID_SOCKET)
+		return 0;
 
 	SOCKADDR_IN serverAddr;
-	ZeroMemory(&serverAddr, sizeof(serverAddr));
+	::memset(&serverAddr, 0, sizeof(serverAddr));
 	serverAddr.sin_family = AF_INET;
-	serverAddr.sin_port = htons(port);
-	inet_pton(AF_INET, ip, &serverAddr.sin_addr);
+	::inet_pton(AF_INET, "127.0.0.1", &serverAddr.sin_addr);
+	serverAddr.sin_port = ::htons(9000);
 
-	if(SOCKET_ERROR == connect(ClientSocket,(SOCKADDR*)&serverAddr,sizeof(serverAddr)))
-		return false;
-
-	
-
-	printf("���� ����\n");
+	while (true)
+	{
+		if (::connect(ClientSocket, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)
+		{
+			if (::WSAGetLastError() == WSAEWOULDBLOCK)
+				continue;
+			if (::WSAGetLastError() == WSAEISCONN)
+				break;
+			return false;
+			break;
+		}
+	}
 
 	return true;
 }
 
-bool SimpleClient::ConnectStart()
+bool SimpleClient::ClientStart()
 {
-	sendThread = std::thread([this]() { SendThread(); });
-	recvThread = std::thread([this]() { RecvThread(); });
+	if (false == ClientInit())
+		return false;
 
-	recvThread.join();
-	sendThread.join();
+	ZeroMemory(&recvBuffer, BUFSIZE);
 
-	closesocket(ClientSocket);
-	WSACleanup();
+	while (true)
+	{
+
+		SendThread();
+
+		RecvThread();
+
+		this_thread::sleep_for(1000ms);
+	}
+
+	//sendThread = std::thread([this]() { SendThread(); });
+	//recvThread = std::thread([this]() { RecvThread(); });
+
+	//sendThread.join();
+	//recvThread.join();
+
 
 	return false;
 }
 
 void SimpleClient::RecvThread()
 {
-	int32 recvLen;
 
-	while (true)
+	WSABUF recvwsaBuf;
+	recvwsaBuf.buf = reinterpret_cast<char*>(&recvBuffer[writePos]);
+	recvwsaBuf.len = static_cast<ULONG>(4096 - writePos);
+
+	DWORD numOfBytes = 0;
+	DWORD flag = 0;
+
+	WSAEVENT wsaEvent = ::WSACreateEvent();
+	WSAOVERLAPPED overlapped = {};
+	overlapped.hEvent = wsaEvent;
+
+	if (SOCKET_ERROR == ::WSARecv(ClientSocket, &recvwsaBuf, 1, &numOfBytes, &flag, &overlapped, nullptr))
 	{
-		recvLen = recv(ClientSocket, recvBuffer, sizeof(recvBuffer), 0);
-		if (recvLen == SOCKET_ERROR)
+		auto error = WSAGetLastError();
+		if (error == WSA_IO_PENDING)
 		{
-			if (::WSAGetLastError() == WSAEWOULDBLOCK)
-				continue;
-			break;
+			// Pending
+			::WSAWaitForMultipleEvents(1, &wsaEvent, TRUE, WSA_INFINITE, FALSE);
+			::WSAGetOverlappedResult(ClientSocket, &overlapped, &numOfBytes, FALSE, &flag);
 		}
-		else if (recvLen == 0)
-			break;
-
-		recvBuffer[recvLen] = '\0';
-		printf("[����] bytes : %d , msg : %s\n", recvLen, recvBuffer);
-		this_thread::sleep_for(1s);
+		else
+		{
+			cout << "Clinet Recv Error : " << error << endl;
+		}
 	}
+
+	cout << "Recv Data ! Len = " << numOfBytes << endl;
+
+	writePos += numOfBytes;
+	readPos += TestRecvPacket(&recvBuffer[readPos], numOfBytes);
+
+	if (writePos == readPos)
+		writePos = readPos = 0;
 	
 }
 
 void SimpleClient::SendThread()
 {
-	size_t len = 0;
-	int32 retval = 0;
 
-	char sendBuffer[BUFSIZE] = "Hello";
+	WSAEVENT wsaEvent = ::WSACreateEvent();
+	WSAOVERLAPPED overlapped = {};
+	overlapped.hEvent = wsaEvent;
 
+	auto buffer = TestSendPacket();
+
+	WSABUF snedwsaBuf;
+	snedwsaBuf.buf = reinterpret_cast<char*>(*buffer.get());
+	snedwsaBuf.len = static_cast<LONG>(_msize(*buffer.get()) / sizeof(BYTE));
+
+	DWORD numOfBytes = 0;
+	DWORD flags = 0;
+	if (::WSASend(ClientSocket, &snedwsaBuf, 1, &numOfBytes, flags, &overlapped, nullptr) == SOCKET_ERROR)
+	{
+		if (::WSAGetLastError() == WSA_IO_PENDING)
+		{
+			// Pending
+			::WSAWaitForMultipleEvents(1, &wsaEvent, TRUE, WSA_INFINITE, FALSE);
+			::WSAGetOverlappedResult(ClientSocket, &overlapped, &numOfBytes, FALSE, &flags);
+		}
+		else
+		{
+			printf("%d", WSAGetLastError());
+		}
+	}
+
+	cout << "Send Data ! Len = " << numOfBytes << endl;
+}
+
+shared_ptr<BYTE*> SimpleClient::TestSendPacket()
+{
+	Protocol::C_LOGIN pkt;
+	pkt.set_id(1);
+
+	const uint16 dataSize = static_cast<uint16>(pkt.ByteSizeLong());
+	const uint16 packetSize = dataSize + sizeof(PacketHeader);
+
+	shared_ptr<BYTE*> PacketSendBuffer = make_shared<BYTE*>(new BYTE[packetSize]);
+
+	PacketHeader* header = reinterpret_cast<PacketHeader*>(*PacketSendBuffer.get());
+	header->id = PKT_C_LOGIN;
+	header->size = packetSize;
+
+	if (false == pkt.SerializeToArray(&header[1], dataSize))
+	{
+		printf("can't SerializeToArray");
+	}
+
+	//TestParsePaketandPrint<Protocol::C_LOGIN>(Print_C_LOGIN, *PacketSendBuffer.get(), packetSize);
+
+	return PacketSendBuffer;
+}
+
+int32 SimpleClient::TestRecvPacket(BYTE* buffer, int32 len)
+{
+	int32 processLen = 0;
 	while (true)
 	{
-		/*
-		printf("\n�Է� >>");
-		if (fgets(sendBuffer, BUFSIZE, stdin) == NULL)
+		int32 dataSize = len - processLen;
+		if (dataSize < sizeof(PacketHeader))
 			break;
 
-		len = strlen(sendBuffer);
-		if (sendBuffer[len - 1] == '\n')
-			sendBuffer[len - 1] = '\0';
-		if (strlen(sendBuffer) == 0)
-			break;
-		*/
+		PacketHeader header;
+		memcpy(&header, &buffer[processLen], sizeof(PacketHeader));
 
-		retval = send(ClientSocket, sendBuffer, static_cast<int>(strlen(sendBuffer)), 0);
-		if (retval == SOCKET_ERROR)
+		if (dataSize < header.size)
 			break;
-		
-		//Ȯ�ο�
-		printf("[�۽�] bytes : %d , msg : %s\n", retval, sendBuffer);
-		this_thread::sleep_for(1s);
+
+		TestParsePaketandPrint<Protocol::S_LOGIN>(Print_S_LOGIN, &buffer[processLen], len);
+
+		processLen += header.size;
 	}
+
+	return processLen;
+}
+
+template<typename ProtoType, typename ProtoFunc>
+bool SimpleClient::TestParsePaketandPrint(ProtoFunc func, BYTE* buffer, int32 len)
+{
+	//TEMP : Only Login Pakcet
+	ProtoType pkt;
+	if (false == pkt.ParseFromArray(buffer + sizeof(PacketHeader), len - sizeof(PacketHeader)))
+	{
+		printf("can't ParsePacket");
+		return false;
+	}
+
+	return func(pkt);
 }

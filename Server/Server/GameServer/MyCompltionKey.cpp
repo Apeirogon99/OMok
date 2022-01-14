@@ -11,7 +11,7 @@ MyCompltionKey::~MyCompltionKey()
     ::closesocket(_clientSocket);
 }
 
-void MyCompltionKey::Send(BYTE* sendBuffer)
+void MyCompltionKey::Send(shared_ptr<BYTE*> sendBuffer)
 {
     if (IsConnect() == false)
         return;
@@ -27,6 +27,8 @@ void MyCompltionKey::Send(BYTE* sendBuffer)
         if (_RegisterSend.exchange(true) == false)
             registerSend = true;
     }
+
+    //cout << "Buf Sucess Push : " << registerSend << endl;
 
     if(registerSend)
          RegisterSend();
@@ -110,6 +112,8 @@ void MyCompltionKey::ProcessDisConnect()
 
 void MyCompltionKey::ProcessSend(int32 numOfBytes)
 {
+    //TEMP
+    cout << "SDNIENIFNE : " << numOfBytes << endl;
 
     sendOverlapped._compltionKey = nullptr;
 
@@ -138,13 +142,15 @@ void MyCompltionKey::ProcessRecv(int32 numOfBytes)
 
     if (numOfBytes == 0)
     {
-        //RegisterDisConnect();
+        printf("ProcessRecv error %d", WSAGetLastError());
+        RegisterDisConnect();
         return;
     }
 
     if (writePos + numOfBytes > 4096 - writePos)
     {
-        //RegisterDisConnect();
+        printf("ProcessRecv error %d", WSAGetLastError());
+        RegisterDisConnect();
         return;
     }
 
@@ -154,13 +160,15 @@ void MyCompltionKey::ProcessRecv(int32 numOfBytes)
     int32 processLen = OnRecv(&recvBuffer[readPos], dataSize);
     if (processLen < 0)
     {
-        //RegisterDisConnect();
+        printf("OnRecv error %d", WSAGetLastError());
+        RegisterDisConnect();
         return;
     }
 
     if (dataSize < processLen)
     {
-        //RegisterDisConnect();
+        printf("OnRecv error %d", WSAGetLastError());
+        RegisterDisConnect();
         return;
     }
 
@@ -174,7 +182,29 @@ void MyCompltionKey::ProcessRecv(int32 numOfBytes)
 
 void MyCompltionKey::RegisterConnect()
 {
+    if (IsConnect() == false)
+        return;
 
+    //SetReuseAddress
+
+    //Bind AnyAdresss
+
+    connectOverlapped.Init();
+    connectOverlapped._compltionKey = shared_from_this();
+
+    //DWORD numOfBytes = 0;
+    //SOCKADDR_IN sockAddr = _clientAddr;
+    //if (false == SocketUtils::ConnectEx(_socket, reinterpret_cast<SOCKADDR*>(&sockAddr), sizeof(sockAddr), nullptr, 0, &numOfBytes, &_connectEvent))
+    //{
+    //    int32 errorCode = ::WSAGetLastError();
+    //    if (errorCode != WSA_IO_PENDING)
+    //    {
+    //        _connectEvent.owner = nullptr; // RELEASE_REF
+    //        return false;
+    //    }
+    //}
+
+    //return true;
 }
 
 void MyCompltionKey::RegisterDisConnect()
@@ -213,13 +243,21 @@ void MyCompltionKey::RegisterSend()
     while (_sendQueue.empty() == false)
     {
         ::lock_guard<::mutex> guard(_mutex);
+
         //TEMP
+        shared_ptr<BYTE*> temp = _sendQueue.front();
         WSABUF wsaBuf;
-        wsaBuf.buf = reinterpret_cast<char*>(_sendQueue.front());
-        wsaBuf.len = static_cast<LONG>(sizeof(_sendQueue.front()));
+        wsaBuf.buf = reinterpret_cast<char*>(*temp.get());
+        wsaBuf.len = static_cast<LONG>(_msize(*temp.get())/sizeof(BYTE));
         wsaBufs.push_back(wsaBuf);
         _sendQueue.pop();
     }
+
+    //cout << "Bufsize : " << wsaBufs.size() << endl;
+    //for (auto index : wsaBufs)
+    //{
+    //    cout << "BufLen : " << index.len << endl;
+    //}
 
     DWORD Bytes = 0;
     if (SOCKET_ERROR == ::WSASend(
@@ -239,6 +277,8 @@ void MyCompltionKey::RegisterSend()
             _RegisterSend.store(false);
         }
     }
+
+    wsaBufs.clear();
 }
 
 void MyCompltionKey::RegisterRecv()

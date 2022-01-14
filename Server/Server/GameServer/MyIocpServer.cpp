@@ -155,7 +155,9 @@ bool MyIocpServer::WorkThread(DWORD timeout)
 		{
 			if (iocpOverlapped->_type == OverlappedType::ACCEPT)
 			{
-				ProcessAccept(iocpOverlapped);
+				printf("Acccccept\n");
+				AcceptOverlapped* acceptEvent = static_cast<AcceptOverlapped*>(iocpOverlapped);
+				ProcessAccept(acceptEvent);
 			}
 			else
 			{
@@ -222,7 +224,9 @@ bool MyIocpServer::CreateClient(int32 maxClient)
 {
 	for (int32 i = 0; i < maxClient; i++)
 	{
-		RegisterAccept();
+		AcceptOverlapped* newAceept = new AcceptOverlapped();
+		_acceptOverlappeds.push_back(newAceept);
+		RegisterAccept(newAceept);
 	}
 	return true;
 }
@@ -233,14 +237,16 @@ int32 MyIocpServer::GetThreadCount()
 	int32 maxThreadCount = 0;
 
 	GetSystemInfo(&info);
-	maxThreadCount = info.dwNumberOfProcessors * 2;
+	//maxThreadCount = info.dwNumberOfProcessors * 2;
+	maxThreadCount = info.dwNumberOfProcessors;
 
 	return maxThreadCount;
 }
 
-void MyIocpServer::ProcessAccept(MyOverlapped* Overlapped)
+void MyIocpServer::ProcessAccept(AcceptOverlapped* newAceept)
 {
-	shared_ptr<MyCompltionKey> compltionKey = Overlapped->_compltionKey;
+	shared_ptr<MyCompltionKey> compltionKey = newAceept->_compltionKey;
+
 	if (true == compltionKey->IsConnect())
 		return;
 
@@ -272,16 +278,17 @@ void MyIocpServer::ProcessAccept(MyOverlapped* Overlapped)
 
 	compltionKey->SetAddress(clientAddr);
 	compltionKey->ProcessConnect();
-	//RegisterAccept();
+	//RegisterAccept(newAceept);
 }
 
-void MyIocpServer::RegisterAccept()
+void MyIocpServer::RegisterAccept(AcceptOverlapped* newAceept)
 {
 	shared_ptr<MyCompltionKey> compltionKey = make_shared<UserSession>();
 
-	AcceptOverlapped* acceptOverlapped = new AcceptOverlapped();
-	acceptOverlapped->Init();
-	acceptOverlapped->_compltionKey = compltionKey;
+	newAceept->Init();
+	newAceept->_compltionKey = nullptr;
+
+	newAceept->_compltionKey = compltionKey;
 
 	if (false == BindCompltionPort(compltionKey->GetSocket()))
 	{
@@ -297,7 +304,7 @@ void MyIocpServer::RegisterAccept()
 
 	bool Success = false;
 	DWORD bytesReceived = 0;
-	Success = AcceptEx(_ListenSocket,compltionKey->GetSocket(),compltionKey->recvBuffer,0,sizeof(SOCKADDR_IN) + 16,sizeof(SOCKADDR_IN) + 16,&bytesReceived,static_cast<LPOVERLAPPED>(acceptOverlapped));
+	Success = AcceptEx(_ListenSocket,compltionKey->GetSocket(),compltionKey->recvBuffer,0,sizeof(SOCKADDR_IN) + 16,sizeof(SOCKADDR_IN) + 16,&bytesReceived,static_cast<LPOVERLAPPED>(newAceept));
 
 	if (false == Success)
 	{
@@ -305,6 +312,7 @@ void MyIocpServer::RegisterAccept()
 		if (errorCode != WSA_IO_PENDING)
 		{
 			printf("AcceptEx ErrorCode : %d\n", errorCode);
+			RegisterAccept(newAceept);
 		}
 	}
 }

@@ -30,12 +30,13 @@ private:
 	int32 GetThreadCount();
 
 private:
-	void ProcessAccept(class MyOverlapped* Overlapped);
-	void RegisterAccept();
+	void ProcessAccept(AcceptOverlapped* newAceept);
+	void RegisterAccept(AcceptOverlapped* newAceept);
 
 private:
 	atomic<int32> _CompltionKeysCount = 0;
 	vector<shared_ptr<MyCompltionKey>> _compltionKeys;
+	vector<AcceptOverlapped*> _acceptOverlappeds;
 	vector<thread> _WorkThreads;
 
 	//TEMP

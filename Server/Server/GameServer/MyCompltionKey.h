@@ -7,7 +7,7 @@ public:
 	MyCompltionKey();
 	virtual ~MyCompltionKey();
 
-	void Send(BYTE* sendBuffer);
+	void Send(shared_ptr<BYTE*> sendBuffer);
 
 	SOCKET GetSocket() const;
 	HANDLE GetHandle() const;
@@ -49,7 +49,7 @@ public:
 public:
 	//char sendBuffer[BUFSIZE];
 	int32 snedWrite = 0;
-	queue<BYTE*> _sendQueue;
+	queue<shared_ptr<BYTE*>> _sendQueue;
 	atomic<bool> _RegisterSend = false;
 
 public:
@@ -58,7 +58,7 @@ public:
 	int32 _keyIndex = 0;
 	atomic<bool> _connect = false;
 
-	AcceptOverlapped acceptOverlapped;
+	//AcceptOverlapped acceptOverlapped;
 	ConnectOverlapped connectOverlapped;
 	DisConnectOverlapped disConnectOverlapped;
 	RecvOverlapped recvOverlapped;

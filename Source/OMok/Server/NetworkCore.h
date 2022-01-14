@@ -7,11 +7,11 @@
 #include <Sockets/Public/Sockets.h>
 #include <Sockets/Public/SocketSubsystem.h>
 #include <HAL/Runnable.h>
-#include "PacketHandle.h"
 
 /**
  * NetworkCore
  */
+
 class OMOK_API NetworkCore : public FRunnable
 {
 public:
@@ -54,7 +54,7 @@ private:
 	int32 _newSendBufferSize = 0;
 
 	TQueue<TArray<uint8>, EQueueMode::Spsc>  _sendQueue;
-	TArray<uint8>  _recvBuffer;
+	TArray<BYTE>  _recvBuffer;
 	int32 _writePos = 0;
 	int32 _readPos = 0;
 
