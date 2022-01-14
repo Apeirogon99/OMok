@@ -20,6 +20,9 @@ enum : uint16
 
 	PKT_C_LEAVE_GAME = 6,
 	PKT_S_LEAVE_GAME = 7,
+
+	PKT_C_NEXT_TURN = 8,
+	PKT_S_NEXT_TURN = 9,
 };
 
 bool Handle_C_LOGIN(Protocol::C_LOGIN& dpkt, shared_ptr<MyCompltionKey> compltionKey);

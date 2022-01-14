@@ -79,6 +79,9 @@ void ClientPacketHandler::HandlePacket(shared_ptr<MyCompltionKey> compltionKey, 
     case PKT_C_LEAVE_GAME:
         parsePacket<Protocol::C_LEAVE_GAME>(Handle_C_LEAVE_GAME, compltionKey, buffer, header.size);
         break;
+    case PKT_S_NEXT_TURN:
+        parsePacket<Protocol::C_NEXT_TURN>(Handle_C_NEXT_TURN, compltionKey, buffer, header.size);
+        break;
     default:
         printf("EXIT PKT CODE");
         break;

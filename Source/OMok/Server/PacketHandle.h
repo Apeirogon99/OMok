@@ -27,11 +27,22 @@ enum PacketId : uint16
 
 	PKT_C_LEAVE_GAME = 6,
 	PKT_S_LEAVE_GAME = 7,
+
+	PKT_C_NEXT_TURN = 8,
+	PKT_S_NEXT_TURN = 9,
 };
 
+<<<<<<< Updated upstream
 bool Handle_S_LOGIN(Protocol::S_LOGIN& pkt);
 bool Handle_S_ENTER_GAME(Protocol::S_ENTER_GMAE& pkt);
 bool Handle_S_LEAVE_GAME(Protocol::S_LEAVE_GAME& pkt);
+=======
+bool Handle_S_LOGIN(Protocol::S_LOGIN& dpkt);
+bool Handle_S_ENTER_GAME(Protocol::S_ENTER_GMAE& dpkt);
+bool Handle_S_LEAVE_GAME(Protocol::S_LEAVE_GAME& dpkt);
+bool Handle_S_NEXT_TURN(Protocol::S_NEXT_TURN& dpkt);
+bool Handle_S_MATCHING_GAME(Protocol::S_MATCHING_GAME& dpkt);
+>>>>>>> Stashed changes
 
 class OMOK_API PacketHandle
 {
@@ -48,6 +59,7 @@ public:
 	static TArray<BYTE> MakeSendBuffer(Protocol::C_LOGIN& pkt) { return EncodePacket(pkt, PacketId::PKT_C_LOGIN); }
 	static TArray<BYTE> MakeSendBuffer(Protocol::C_ENTER_GAME& pkt) { return EncodePacket(pkt, PacketId::PKT_C_ENTER_GAME); }
 	static TArray<BYTE> MakeSendBuffer(Protocol::C_LEAVE_GAME& pkt) { return EncodePacket(pkt, PacketId::PKT_C_LEAVE_GAME); }
+	static TArray<BYTE> MakeSendBuffer(Protocol::C_NEXT_TURN& pkt) { return EncodePacket(pkt, PacketId::PKT_C_NEXT_TURN); }
 
 	template<typename ProtoType>
 	static TArray<BYTE> EncodePacket(ProtoType& pkt, PacketId id)
