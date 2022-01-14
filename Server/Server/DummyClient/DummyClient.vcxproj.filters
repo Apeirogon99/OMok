@@ -16,6 +16,9 @@
     <Filter Include="Protocol">
       <UniqueIdentifier>{e25b1461-f047-4ee4-9339-24ee647cf4b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ClientCore">
+      <UniqueIdentifier>{dfe7ceb5-b6e5-4f79-b8b5-be6d54d2495e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DummyClient.cpp">
@@ -33,6 +36,12 @@
     <ClCompile Include="Protocol.pb.cc">
       <Filter>Protocol</Filter>
     </ClCompile>
+    <ClCompile Include="ServerPacketHandler.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleClient.cpp">
+      <Filter>ClientCore</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -46,6 +55,12 @@
     </ClInclude>
     <ClInclude Include="Enum.pb.h">
       <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerPacketHandler.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleClient.h">
+      <Filter>ClientCore</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
