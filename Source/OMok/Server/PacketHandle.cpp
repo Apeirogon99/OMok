@@ -18,6 +18,8 @@ void PacketHandle::Init(UWorld* world)
     if (world->GetWorld())
     {
         _gameMode = Cast<ABattleGameMode>(world->GetWorld()->GetAuthGameMode());
+        //GameState는 gamemode를 이용해서 불러오면됨
+        //PlayerState는 Pawn이나 Controller로 불러올수있음 또는 전체는 GameState이용하면됨
     }
 
     if (_gameMode)
@@ -34,7 +36,7 @@ int32 PacketHandle::RecviveData(BYTE* data, int32 len)
 {
     int32 processLen = 0;
     int32 dataSize = len;
-
+    
     while (true)
     {
         dataSize -= processLen;
@@ -76,22 +78,40 @@ void PacketHandle::DecodePacket(BYTE* buffer, PacketHeader header)
     }
 }
 
-bool Handle_S_LOGIN(Protocol::S_LOGIN& pkt)
+bool Handle_S_LOGIN(Protocol::S_LOGIN& dpkt)
 {
-    UE_LOG(LogTemp, Warning, TEXT("Handle_C_LOGIN - id : %d"),pkt.playerid());
+    UE_LOG(LogTemp, Warning, TEXT("Handle_C_LOGIN - id : %d"),dpkt.playerid());
+    auto playerId = dpkt.playerid();
+    
+    Protocol::C_ENTER_GAME pkt;
+    pkt.set_playerid(playerId);
+    auto sendBuffer = PacketHandle::EncodePacket(pkt ,PKT_C_ENTER_GAME);
+
+    auto gameState = PacketHandle::_gameMode->GetGameState<ABattleGameState>();
+    gameState->_networkCore->SendData(sendBuffer);
+
     return true;
 }
 
-bool Handle_S_ENTER_GAME(Protocol::S_ENTER_GMAE& pkt)
+bool Handle_S_ENTER_GAME(Protocol::S_ENTER_GMAE& dpkt)
 {
     UE_LOG(LogTemp, Warning, TEXT("Handle_C_ENTER_GAME"));
+    //이것도 렌더링
     
     return true;
 }
 
-bool Handle_S_LEAVE_GAME(Protocol::S_LEAVE_GAME& pkt)
+bool Handle_S_LEAVE_GAME(Protocol::S_LEAVE_GAME& dpkt)
 {
     UE_LOG(LogTemp, Warning, TEXT("Handle_C_LEAVE_GAME"));
     
     return true;
+}
+
+bool Handle_S_NEXT_TURN(Protocol::S_NEXT_TURN& dpkt)
+{
+    //보드판에 렌더링
+    UE_LOG(LogTemp, Warning, TEXT("Handle_S_NEXT_TURN"));
+    
+    return false;
 }

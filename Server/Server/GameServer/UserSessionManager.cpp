@@ -23,3 +23,9 @@ void UserSessionManager::Broadcast(shared_ptr<BYTE*> sendBuffer)
 		session->Send(sendBuffer);
 	}
 }
+
+bool UserSessionManager::FindUser(shared_ptr<UserSession> session)
+{
+	auto iter = _userSessions.find(session);
+	return iter != _userSessions.end();
+}

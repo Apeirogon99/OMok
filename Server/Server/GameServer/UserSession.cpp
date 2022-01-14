@@ -17,6 +17,7 @@ void UserSession::OnDisconnected()
 {
 	//printf("OnDisconnected UserSessionn", len);
 	GUserSessionManger.Remove(static_pointer_cast<UserSession>(shared_from_this()));
+	_GameUser.reset();
 }
 
 int32 UserSession::OnRecv(BYTE* buffer, int32 len)
@@ -28,4 +29,10 @@ int32 UserSession::OnRecv(BYTE* buffer, int32 len)
 void UserSession::OnSend(int32 len)
 {
 	//printf("OnSend : %d\n", len);
+}
+
+void UserSession::CreateUser(shared_ptr<UserSession> userSession, uint64 userId)
+{
+	shared_ptr<GameUser> user = make_shared<GameUser>(userSession, userId);
+	_GameUser = user;
 }

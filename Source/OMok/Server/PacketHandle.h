@@ -5,6 +5,9 @@
 #include "CoreMinimal.h"
 #include <OMok/Framework/BattleGameMode.h>
 #include <OMok/Framework/BattleGameState.h>
+#include <OMok/Framework/BattlePlayerState.h>
+#include <OMok/Framework/UserController.h>
+#include <OMok/Framework/UserPawn.h>
 #include <OMok/ProtoFiles/Protocol.pb.h>
 
 //class void PacketHandle::EncodePacket;
@@ -29,9 +32,10 @@ enum PacketId : uint16
 	PKT_S_LEAVE_GAME = 7,
 };
 
-bool Handle_S_LOGIN(Protocol::S_LOGIN& pkt);
-bool Handle_S_ENTER_GAME(Protocol::S_ENTER_GMAE& pkt);
-bool Handle_S_LEAVE_GAME(Protocol::S_LEAVE_GAME& pkt);
+bool Handle_S_LOGIN(Protocol::S_LOGIN& dpkt);
+bool Handle_S_ENTER_GAME(Protocol::S_ENTER_GMAE& dpkt);
+bool Handle_S_LEAVE_GAME(Protocol::S_LEAVE_GAME& dpkt);
+bool Handle_S_NEXT_TURN(Protocol::S_NEXT_TURN& dpkt);
 
 class OMOK_API PacketHandle
 {
@@ -84,7 +88,6 @@ public:
 		return func(pkt);
 	}
 
-private:
+public:
 	static ABattleGameMode* _gameMode;
-	//static ABattleGameState* _gameState;
 };

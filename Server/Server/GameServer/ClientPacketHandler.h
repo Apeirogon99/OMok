@@ -25,6 +25,8 @@ enum : uint16
 bool Handle_C_LOGIN(Protocol::C_LOGIN& dpkt, shared_ptr<MyCompltionKey> compltionKey);
 bool Handle_C_ENTER_GMAE(Protocol::C_ENTER_GAME& dpkt, shared_ptr<MyCompltionKey> compltionKey);
 bool Handle_C_LEAVE_GAME(Protocol::C_LEAVE_GAME& dpkt, shared_ptr<MyCompltionKey> compltionKey);
+bool Handle_C_NEXT_TURN(Protocol::C_NEXT_TURN& dpkt, shared_ptr<MyCompltionKey> compltionKey);
+
 
 class ClientPacketHandler
 {
