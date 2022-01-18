@@ -34,6 +34,7 @@
 #include <google/protobuf/generated_message_reflection.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
+#include <google/protobuf/generated_enum_reflection.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 #define PROTOBUF_INTERNAL_EXPORT_Enum_2eproto
@@ -60,6 +61,34 @@ PROTOBUF_NAMESPACE_OPEN
 PROTOBUF_NAMESPACE_CLOSE
 namespace Protocol {
 
+enum BoardGameResult : int {
+  NONE = 0,
+  ERROR_RANGE = 1,
+  ERROR_HAVE = 2,
+  NOT_HAPPEND = 3,
+  WINNER = 4,
+  BoardGameResult_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  BoardGameResult_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool BoardGameResult_IsValid(int value);
+constexpr BoardGameResult BoardGameResult_MIN = NONE;
+constexpr BoardGameResult BoardGameResult_MAX = WINNER;
+constexpr int BoardGameResult_ARRAYSIZE = BoardGameResult_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* BoardGameResult_descriptor();
+template<typename T>
+inline const std::string& BoardGameResult_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, BoardGameResult>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function BoardGameResult_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    BoardGameResult_descriptor(), enum_t_value);
+}
+inline bool BoardGameResult_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, BoardGameResult* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<BoardGameResult>(
+    BoardGameResult_descriptor(), name, value);
+}
 // ===================================================================
 
 
@@ -79,6 +108,16 @@ namespace Protocol {
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace Protocol
+
+PROTOBUF_NAMESPACE_OPEN
+
+template <> struct is_proto_enum< ::Protocol::BoardGameResult> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::BoardGameResult>() {
+  return ::Protocol::BoardGameResult_descriptor();
+}
+
+PROTOBUF_NAMESPACE_CLOSE
 
 // @@protoc_insertion_point(global_scope)
 

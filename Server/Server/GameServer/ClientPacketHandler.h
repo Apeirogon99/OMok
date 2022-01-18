@@ -16,15 +16,26 @@ enum : uint16
 	PKT_C_ENTER_GAME = 3,
 	PKT_S_ENTER_GMAE = 4,
 
-	PKT_S_MATCHING_GAME = 5,
+	PKT_C_MATCHING_GAME = 5,
+	PKT_S_MATCHING_GAME = 6,
 
-	PKT_C_LEAVE_GAME = 6,
-	PKT_S_LEAVE_GAME = 7,
+	PKT_C_LEAVE_GAME = 7,
+	PKT_S_LEAVE_GAME = 8,
+
+	PKT_C_NEXT_TURN = 9,
+	PKT_S_NEXT_TURN = 10,
+
+	PKT_C_CHAT_LOOBY = 11,
+	PKT_S_CHAT_LOOBY = 12,
 };
 
 bool Handle_C_LOGIN(Protocol::C_LOGIN& dpkt, shared_ptr<MyCompltionKey> compltionKey);
-bool Handle_C_ENTER_GMAE(Protocol::C_ENTER_GAME& dpkt, shared_ptr<MyCompltionKey> compltionKey);
+bool Handle_C_ENTER_GMAE(Protocol::C_ENTER_GAME& dpkt, 
+shared_ptr<MyCompltionKey> compltionKey);
+bool Handle_C_MATCHING_GAME(Protocol::C_MATCHING_GAME& dpkt, shared_ptr<MyCompltionKey> compltionKey);
 bool Handle_C_LEAVE_GAME(Protocol::C_LEAVE_GAME& dpkt, shared_ptr<MyCompltionKey> compltionKey);
+bool Handle_C_NEXT_TURN(Protocol::C_NEXT_TURN& dpkt, shared_ptr<MyCompltionKey> compltionKey);
+bool Handle_C_CHAT_LOBBY(Protocol::C_CHAT_LOBBY& dpkt, shared_ptr<MyCompltionKey> compltionKey);
 
 class ClientPacketHandler
 {

@@ -29,3 +29,16 @@ void UserSession::OnSend(int32 len)
 {
 	//printf("OnSend : %d\n", len);
 }
+
+bool UserSession::CreateUser(shared_ptr<UserSession> userSession, uint64 userId)
+{
+	if (_GameUser)
+	{
+		return false;
+	}
+	else
+	{
+		_GameUser = make_shared<GameUser>(userSession, userId);
+		return true;
+	}
+}

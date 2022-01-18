@@ -73,10 +73,6 @@ bool NetworkCore::Connect()
 		return false;
 	}
 
-	/*Protocol::C_LOGIN pkt;
-	pkt.set_id(1);
-	SendData(PacketHandle::MakeSendBuffer(pkt));*/
-
 	return true;
 }
 
@@ -104,7 +100,7 @@ void NetworkCore::DisConnect()
 }
 
 void NetworkCore::SendData(TArray<uint8> data)
-{
+{	
 	if (data.Num() == 0)
 		return;
 
@@ -156,6 +152,8 @@ void NetworkCore::RecvData()
 
 void NetworkCore::SendToData()
 {
+	UE_LOG(LogTemp, Warning, TEXT("SendData"));
+	
 	TArray<BYTE> data;
 	while (false == _sendQueue.IsEmpty())
 	{

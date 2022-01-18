@@ -20,4 +20,13 @@ public:
 protected:
 	virtual void PlayerTick(float DeltaTime) override;
 	
+public:
+	AUserController();
+	~AUserController();
+
+public:
+	void ShowLobbyWidget();
+
+public:
+	TSubclassOf<class UW_Lobby> W_Lobby;
 };

@@ -13,23 +13,6 @@ PacketHandle::~PacketHandle()
 {
 }
 
-void PacketHandle::Init(UWorld* world)
-{
-    if (world->GetWorld())
-    {
-        _gameMode = Cast<ABattleGameMode>(world->GetWorld()->GetAuthGameMode());
-    }
-
-    if (_gameMode)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("PacketHandle Ready"));
-    }
-    else
-    {
-        UE_LOG(LogTemp, Warning, TEXT("PacketHandle not Ready"));
-    }
-}
-
 int32 PacketHandle::RecviveData(BYTE* data, int32 len)
 {
     int32 processLen = 0;
@@ -71,27 +54,71 @@ void PacketHandle::DecodePacket(BYTE* buffer, PacketHeader header)
     case PKT_S_LEAVE_GAME:
         parsePacket<Protocol::S_LEAVE_GAME>(Handle_S_LEAVE_GAME, buffer, header.size);
         break;
+    case PKT_S_NEXT_TURN:
+        parsePacket<Protocol::S_NEXT_TURN>(Handle_S_NEXT_TURN, buffer, header.size);
+        break;
+    case PKT_S_MATCHING_GAME:
+        parsePacket<Protocol::S_MATCHING_GAME>(Handle_S_MATCHING_GAME, buffer, header.size);
+        break;
+    case PKT_S_CHAT_LOOBY:
+        parsePacket<Protocol::S_CHAT_LOBBY>(Handle_S_CHAT_LOBBY, buffer, header.size);
+        break;
+
     default:
         break;
     }
 }
 
-bool Handle_S_LOGIN(Protocol::S_LOGIN& pkt)
+bool Handle_S_LOGIN(Protocol::S_LOGIN& dpkt)
 {
-    UE_LOG(LogTemp, Warning, TEXT("Handle_C_LOGIN - id : %d"),pkt.playerid());
+    UE_LOG(LogTemp, Warning, TEXT("Handle_C_LOGIN"));
+    
+    auto nickName = dpkt.nickname();
+
+    //인스턴스
+
+
     return true;
 }
 
-bool Handle_S_ENTER_GAME(Protocol::S_ENTER_GMAE& pkt)
+bool Handle_S_ENTER_GAME(Protocol::S_ENTER_GMAE& dpkt)
 {
+    //들어왔는지 확인
+    //성공적으로 대기열에 들어옴
     UE_LOG(LogTemp, Warning, TEXT("Handle_C_ENTER_GAME"));
     
     return true;
 }
 
-bool Handle_S_LEAVE_GAME(Protocol::S_LEAVE_GAME& pkt)
+bool Handle_S_LEAVE_GAME(Protocol::S_LEAVE_GAME& dpkt)
 {
+    //매칭잡히기 전에 빠짐
     UE_LOG(LogTemp, Warning, TEXT("Handle_C_LEAVE_GAME"));
+    
+    return true;
+}
+
+bool Handle_S_NEXT_TURN(Protocol::S_NEXT_TURN& dpkt)
+{
+    //보드판에 렌더링
+    UE_LOG(LogTemp, Warning, TEXT("Handle_S_NEXT_TURN"));
+    
+    return false;
+}
+
+bool Handle_S_MATCHING_GAME(Protocol::S_MATCHING_GAME& dpkt)
+{
+    UE_LOG(LogTemp, Warning, TEXT("Handle_S_MATCHING_GAME"));
+    return true;
+}
+
+bool Handle_S_CHAT_LOBBY(Protocol::S_CHAT_LOBBY& dpkt)
+{
+    //CHAT
+    UE_LOG(LogTemp, Warning, TEXT("Handle_S_CHAT_LOBBY"));
+    
+    AUserController* UC;
+    UC->W_Lobby->Update_chatBox();
     
     return true;
 }

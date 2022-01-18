@@ -31,6 +31,7 @@ private:
 
 public:
 	bool GetConnect();
+	bool IsConnect() { return _connect; }
 	FSocket* GetSocket() { return _clientSocket; }
 	//FIPv4Endpoint GetEndpoint{ return _serverAddr; }
 

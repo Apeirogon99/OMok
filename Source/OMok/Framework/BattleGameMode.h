@@ -20,4 +20,6 @@ public:
 
 	virtual void BeginPlay() override;
 
+public:
+	class NetworkCore* _networkCore;
 };

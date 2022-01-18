@@ -32,8 +32,10 @@
 #include <google/protobuf/generated_message_util.h>
 #include <google/protobuf/metadata_lite.h>
 #include <google/protobuf/generated_message_reflection.h>
+#include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
+#include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 #define PROTOBUF_INTERNAL_EXPORT_Struct_2eproto
@@ -56,13 +58,173 @@ struct TableStruct_Struct_2eproto {
   static const uint32_t offsets[];
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Struct_2eproto;
+namespace Protocol {
+class BoardPos;
+struct BoardPosDefaultTypeInternal;
+extern BoardPosDefaultTypeInternal _BoardPos_default_instance_;
+}  // namespace Protocol
 PROTOBUF_NAMESPACE_OPEN
+template<> ::Protocol::BoardPos* Arena::CreateMaybeMessage<::Protocol::BoardPos>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace Protocol {
 
 // ===================================================================
 
+class BoardPos final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.BoardPos) */ {
+ public:
+  inline BoardPos() : BoardPos(nullptr) {}
+  ~BoardPos() override;
+  explicit constexpr BoardPos(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
+  BoardPos(const BoardPos& from);
+  BoardPos(BoardPos&& from) noexcept
+    : BoardPos() {
+    *this = ::std::move(from);
+  }
+
+  inline BoardPos& operator=(const BoardPos& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline BoardPos& operator=(BoardPos&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const BoardPos& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const BoardPos* internal_default_instance() {
+    return reinterpret_cast<const BoardPos*>(
+               &_BoardPos_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    0;
+
+  friend void swap(BoardPos& a, BoardPos& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(BoardPos* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(BoardPos* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  BoardPos* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<BoardPos>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const BoardPos& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const BoardPos& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(BoardPos* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "Protocol.BoardPos";
+  }
+  protected:
+  explicit BoardPos(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kPosXFieldNumber = 1,
+    kPosYFieldNumber = 2,
+  };
+  // int64 posX = 1;
+  void clear_posx();
+  int64_t posx() const;
+  void set_posx(int64_t value);
+  private:
+  int64_t _internal_posx() const;
+  void _internal_set_posx(int64_t value);
+  public:
+
+  // int64 posY = 2;
+  void clear_posy();
+  int64_t posy() const;
+  void set_posy(int64_t value);
+  private:
+  int64_t _internal_posy() const;
+  void _internal_set_posy(int64_t value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:Protocol.BoardPos)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  int64_t posx_;
+  int64_t posy_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_Struct_2eproto;
+};
 // ===================================================================
 
 
@@ -72,6 +234,48 @@ namespace Protocol {
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
+// BoardPos
+
+// int64 posX = 1;
+inline void BoardPos::clear_posx() {
+  posx_ = int64_t{0};
+}
+inline int64_t BoardPos::_internal_posx() const {
+  return posx_;
+}
+inline int64_t BoardPos::posx() const {
+  // @@protoc_insertion_point(field_get:Protocol.BoardPos.posX)
+  return _internal_posx();
+}
+inline void BoardPos::_internal_set_posx(int64_t value) {
+  
+  posx_ = value;
+}
+inline void BoardPos::set_posx(int64_t value) {
+  _internal_set_posx(value);
+  // @@protoc_insertion_point(field_set:Protocol.BoardPos.posX)
+}
+
+// int64 posY = 2;
+inline void BoardPos::clear_posy() {
+  posy_ = int64_t{0};
+}
+inline int64_t BoardPos::_internal_posy() const {
+  return posy_;
+}
+inline int64_t BoardPos::posy() const {
+  // @@protoc_insertion_point(field_get:Protocol.BoardPos.posY)
+  return _internal_posy();
+}
+inline void BoardPos::_internal_set_posy(int64_t value) {
+  
+  posy_ = value;
+}
+inline void BoardPos::set_posy(int64_t value) {
+  _internal_set_posy(value);
+  // @@protoc_insertion_point(field_set:Protocol.BoardPos.posY)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__

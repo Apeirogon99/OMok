@@ -1,21 +1,21 @@
 #include "pch.h"
-#include "UserSessionManager.h"
+#include "Lobby.h"
 
-UserSessionManager GUserSessionManger;
+Lobby GLobby;
 
-void UserSessionManager::Add(shared_ptr<UserSession> session)
+void Lobby::Enter(shared_ptr<UserSession> session)
 {
 	lock_guard<mutex> lockguard(_mutex);
 	_userSessions.insert(session);
 }
 
-void UserSessionManager::Remove(shared_ptr<UserSession> session)
+void Lobby::Leave(shared_ptr<UserSession> session)
 {
 	lock_guard<mutex> lockguard(_mutex);
 	_userSessions.erase(session);
 }
 
-void UserSessionManager::Broadcast(shared_ptr<BYTE*> sendBuffer)
+void Lobby::Broadcast(shared_ptr<BYTE*> sendBuffer)
 {
 	lock_guard<mutex> lockguard(_mutex);
 	for (shared_ptr<UserSession> session : _userSessions)
@@ -24,7 +24,7 @@ void UserSessionManager::Broadcast(shared_ptr<BYTE*> sendBuffer)
 	}
 }
 
-bool UserSessionManager::FindUser(shared_ptr<UserSession> session)
+bool Lobby::FindUser(shared_ptr<UserSession> session)
 {
 	auto iter = _userSessions.find(session);
 	return iter != _userSessions.end();

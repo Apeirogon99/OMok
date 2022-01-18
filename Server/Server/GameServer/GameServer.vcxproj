@@ -102,6 +102,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,6 +123,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,6 +144,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -162,6 +165,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -186,6 +190,7 @@
     <ClCompile Include="GameRoomManager.cpp" />
     <ClCompile Include="GameServer.cpp" />
     <ClCompile Include="GameUser.cpp" />
+    <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="MyCompltionKey.cpp" />
     <ClCompile Include="MyIocpServer.cpp" />
     <ClCompile Include="MyOverlapped.cpp" />
@@ -216,6 +221,7 @@
     <ClInclude Include="GameRoom.h" />
     <ClInclude Include="GameRoomManager.h" />
     <ClInclude Include="GameUser.h" />
+    <ClInclude Include="Lobby.h" />
     <ClInclude Include="MyCompltionKey.h" />
     <ClInclude Include="MyIocpServer.h" />
     <ClInclude Include="MyOverlapped.h" />

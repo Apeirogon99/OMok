@@ -24,5 +24,11 @@ void ABattleGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
+	_networkCore = new NetworkCore();
+	if (_networkCore)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Create GameState and NetworkCore"));
+		}
+
 	PacketHandle::Init(GetWorld());
 }

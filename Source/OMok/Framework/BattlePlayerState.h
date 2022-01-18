@@ -17,10 +17,10 @@ class OMOK_API ABattlePlayerState : public APlayerState
 public:
 	ABattlePlayerState();
 	~ABattlePlayerState();
-	void setPlayerInfo(bool team, int64 gameId);
 	
-private:
+public:
 	bool _team;
 	int64 _gameId;
+	FString _nickName;
 
 };
