@@ -12,10 +12,3 @@ ABattlePlayerState::~ABattlePlayerState()
 {
 
 }
-
-void ABattlePlayerState::setPlayerInfo(bool team, int64 gameId)
-{
-	this->_team = team;
-	this->_gameId = gameId;
-}
-

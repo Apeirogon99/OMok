@@ -13,6 +13,7 @@ MyCompltionKey::~MyCompltionKey()
 
 void MyCompltionKey::Send(shared_ptr<BYTE*> sendBuffer)
 {
+    cout << "Send data data" << endl;
     if (IsConnect() == false)
         return;
 
@@ -28,7 +29,7 @@ void MyCompltionKey::Send(shared_ptr<BYTE*> sendBuffer)
             registerSend = true;
     }
 
-    //cout << "Buf Sucess Push : " << registerSend << endl;
+    cout << "Buf Sucess Push : " << registerSend << endl;
 
     if(registerSend)
          RegisterSend();

@@ -14,4 +14,13 @@ class OMOK_API AUserController : public APlayerController
 {
 	GENERATED_BODY()
 	
+public:
+	AUserController();
+	~AUserController();
+
+public:
+	void ShowLobbyWidget();
+
+public:
+	TSubclassOf<class UW_Lobby> W_Lobby;
 };
