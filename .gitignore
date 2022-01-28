@@ -8,8 +8,6 @@ Server/Server/Libraries/
 Content/Server/
 
 # Only client test
-Content/Client/
-
 
 ### UnrealEngine ###
 # Visual Studio 2015 user specific files
