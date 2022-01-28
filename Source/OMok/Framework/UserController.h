@@ -14,6 +14,12 @@ UCLASS()
 class OMOK_API AUserController : public APlayerController
 {
 	GENERATED_BODY()
+
+public:
+	AUserController();
+
+protected:
+	virtual void PlayerTick(float DeltaTime) override;
 	
 public:
 	AUserController();

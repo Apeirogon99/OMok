@@ -3,7 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Camera/CameraComponent.h"
 #include "GameFramework/Pawn.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "OMok/ClientTest/Board.h"
+#include "OMok/ClientTest/Omak_Actor.h"
 #include "UserPawn.generated.h"
 
 UCLASS()
@@ -15,6 +19,20 @@ public:
 	// Sets default values for this pawn's properties
 	AUserPawn();
 
+private:
+	//spawn Actor
+	UPROPERTY(VisibleAnywhere)
+	AOmak_Actor* SpawnActor;
+	
+	UPROPERTY(VisibleAnywhere)
+	UCameraComponent* Camera;
+
+	UPROPERTY(VisibleAnywhere)
+	USpringArmComponent* CameraArm;
+
+	UPROPERTY(VisibleAnywhere)
+	ABoard* Omak_Board;
+		
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -26,4 +44,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void Click();
+
+	
 };

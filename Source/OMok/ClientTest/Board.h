@@ -1,0 +1,30 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
+#include "Board.generated.h"
+
+UCLASS()
+class OMOK_API ABoard : public AActor
+{
+	GENERATED_BODY()
+	
+public:	
+	// Sets default values for this actor's properties
+	ABoard();
+
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category=Floor)
+	UStaticMeshComponent* Floor_Part;
+
+public:
+	void SetBoard_Array(const int X, const int Y);
+		
+private:
+	//Using Board Arr
+	UPROPERTY(VisibleAnywhere)
+	TArray<int> Board_Arr;
+	
+};
