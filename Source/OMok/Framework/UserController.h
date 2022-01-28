@@ -18,13 +18,6 @@ class OMOK_API AUserController : public APlayerController
 public:
 	AUserController();
 
-protected:
-	virtual void PlayerTick(float DeltaTime) override;
-	
-public:
-	AUserController();
-	~AUserController();
-
 public:
 	void ShowLobbyWidget();
 

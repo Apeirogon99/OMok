@@ -5,12 +5,7 @@
 
 AUserController::AUserController()
 {
-
-}
-
-AUserController::~AUserController()
-{
-
+	bShowMouseCursor=true;
 }
 
 void AUserController::ShowLobbyWidget()
@@ -21,16 +16,4 @@ void AUserController::ShowLobbyWidget()
 		_Lobby = Cast<UW_Lobby>(CreateWidget(this, W_Lobby));
 		_Lobby->AddToViewport();
 	}
-}
-
-AUserController::AUserController()
-{
-	bShowMouseCursor=true;
-}
-
-void AUserController::PlayerTick(float DeltaTime)
-{
-	Super::PlayerTick(DeltaTime);
-	
-	//DrawDebugLine(GetWorld(),Start,End,FColor::Orange,false,2.f);
 }
