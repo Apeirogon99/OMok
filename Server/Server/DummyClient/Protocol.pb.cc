@@ -71,7 +71,7 @@ struct S_ENTER_GMAEDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT S_ENTER_GMAEDefaultTypeInternal _S_ENTER_GMAE_default_instance_;
 constexpr C_MATCHING_GAME::C_MATCHING_GAME(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : playerid_(false){}
+  : playerid_(int64_t{0}){}
 struct C_MATCHING_GAMEDefaultTypeInternal {
   constexpr C_MATCHING_GAMEDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -322,7 +322,7 @@ const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABL
   "\010\022\020\n\010playerId\030\002 \001(\003\022\020\n\010nickName\030\003 \001(\t\" \n"
   "\014C_ENTER_GAME\022\020\n\010playerId\030\001 \001(\003\"2\n\014S_ENT"
   "ER_GMAE\022\017\n\007success\030\001 \001(\010\022\021\n\tdelayTime\030\002 "
-  "\001(\003\"#\n\017C_MATCHING_GAME\022\020\n\010playerId\030\001 \001(\010"
+  "\001(\003\"#\n\017C_MATCHING_GAME\022\020\n\010playerId\030\001 \001(\003"
   "\"5\n\017S_MATCHING_GAME\022\017\n\007success\030\001 \001(\010\022\021\n\t"
   "delayTime\030\002 \001(\003\" \n\014C_LEAVE_GAME\022\020\n\010playe"
   "rId\030\001 \001(\003\"\037\n\014S_LEAVE_GAME\022\017\n\007success\030\001 \001"
@@ -1283,7 +1283,7 @@ C_MATCHING_GAME::C_MATCHING_GAME(const C_MATCHING_GAME& from)
 }
 
 inline void C_MATCHING_GAME::SharedCtor() {
-playerid_ = false;
+playerid_ = int64_t{0};
 }
 
 C_MATCHING_GAME::~C_MATCHING_GAME() {
@@ -1313,7 +1313,7 @@ void C_MATCHING_GAME::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  playerid_ = false;
+  playerid_ = int64_t{0};
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -1323,7 +1323,7 @@ const char* C_MATCHING_GAME::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPAC
     uint32_t tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // bool playerId = 1;
+      // int64 playerId = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
           playerid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
@@ -1360,10 +1360,10 @@ uint8_t* C_MATCHING_GAME::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bool playerId = 1;
+  // int64 playerId = 1;
   if (this->_internal_playerid() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(1, this->_internal_playerid(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(1, this->_internal_playerid(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1382,9 +1382,9 @@ size_t C_MATCHING_GAME::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // bool playerId = 1;
+  // int64 playerId = 1;
   if (this->_internal_playerid() != 0) {
-    total_size += 1 + 1;
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int64SizePlusOne(this->_internal_playerid());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);

@@ -72,11 +72,13 @@ void PacketHandle::DecodePacket(BYTE* buffer, PacketHeader header)
 bool Handle_S_LOGIN(Protocol::S_LOGIN& dpkt)
 {
     UE_LOG(LogTemp, Warning, TEXT("Handle_C_LOGIN"));
-    
-    auto nickName = dpkt.nickname();
 
-    //인스턴스
-
+    UOMokGameInstance* gameInstance = PacketHandle::_gameMode->GetGameInstance<UOMokGameInstance>();
+    if (gameInstance)
+    {
+        gameInstance->_nickName = dpkt.nickname().c_str();
+        gameInstance->_playerId = dpkt.playerid();
+    }
 
     return true;
 }
@@ -117,8 +119,16 @@ bool Handle_S_CHAT_LOBBY(Protocol::S_CHAT_LOBBY& dpkt)
     //CHAT
     UE_LOG(LogTemp, Warning, TEXT("Handle_S_CHAT_LOBBY"));
     
-    AUserController* UC;
-    UC->W_Lobby->Update_chatBox();
+    FText nickname = FText::FromString(dpkt.playernickname().c_str());
+    FText message = FText::FromString(dpkt.message().c_str());
+
+    UE_LOG(LogTemp, Warning, TEXT("name : %s, message : %s"),*nickname.ToString(), *message.ToString());
+    
+    AUserController* UC = Cast<AUserController>(PacketHandle::_gameMode->GetWorld()->GetFirstPlayerController());
+    if (UC)
+    {
+         UC->_Lobby->Update_chatBox(nickname, message);
+    }
     
     return true;
 }

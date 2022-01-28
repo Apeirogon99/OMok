@@ -24,7 +24,7 @@ bool Handle_C_LOGIN(Protocol::C_LOGIN& dpkt,shared_ptr<MyCompltionKey> compltion
     pkt.set_nickname(dpkt.id());
     compltionKey->Send(ClientPacketHandler::SerializePacket(pkt, PKT_S_LOGIN));
 
-    cout << GLobby.GetUserSessionCount() << endl;
+    //cout << GLobby.GetUserSessionCount() << endl;
 
     return true;
 }
@@ -41,9 +41,28 @@ bool Handle_C_MATCHING_GAME(Protocol::C_MATCHING_GAME& dpkt, shared_ptr<MyComplt
     //매칭잡힌 플레이어가 수락을 하였는지 확인하는 곳
     //TEMP : 그냥 바로 잡아줌
     shared_ptr<UserSession> userSession = static_pointer_cast<UserSession>(compltionKey);
-    GRoom.Enter(userSession->GetUser());
 
-    //Protocol::S_ENTER_GMAE pkt;
+    GRoom.Enter(userSession->GetUser());
+    GLobby.Leave(userSession);
+
+    //TEMP
+    Protocol::S_MATCHING_GAME pkt;
+    pkt.set_delaytime(1);
+    pkt.set_success(true);
+
+    auto newSendBuf = ClientPacketHandler::SerializePacket(pkt, PKT_S_MATCHING_GAME);
+
+    compltionKey->Send(newSendBuf);
+
+    if (GRoom.StartGame())
+    {
+        Protocol::S_ENTER_GMAE pktg;
+        pkt.set_delaytime(1);
+        pkt.set_success(true);
+        auto newSendBufg = ClientPacketHandler::SerializePacket(pktg, PKT_S_ENTER_GMAE);
+
+        GRoom.Broadcast(newSendBufg);
+    }
 
     return true;
 }
@@ -98,6 +117,8 @@ bool Handle_C_CHAT_LOBBY(Protocol::C_CHAT_LOBBY& dpkt, shared_ptr<MyCompltionKey
     pkt.set_playerid(dpkt.playerid());
     pkt.set_playernickname(dpkt.playernickname());
     pkt.set_message(dpkt.message());
+
+    cout << dpkt.message() << endl;
 
     auto newSendBuf = ClientPacketHandler::SerializePacket(pkt, PKT_S_CHAT_LOOBY);
 

@@ -14,4 +14,8 @@ class OMOK_API UOMokGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 	
+public:
+	FString _nickName;
+	int64 _playerId;
+	
 };

@@ -20,7 +20,11 @@ void GameRoom::Broadcast(shared_ptr<BYTE*> sendBuffer)
 	lock_guard<mutex> lockguard(_mutex);
 	for (auto& user : _users)
 	{
-		user.second->_userSession->Send(sendBuffer);
+		auto stillUser = user.second->_userSession.lock();
+		if (stillUser)
+			stillUser->Send(sendBuffer);
+		else
+			Leave(stillUser->GetUser());
 	}
 }
 
@@ -39,7 +43,7 @@ void GameRoom::InitGame()
 bool GameRoom::StartGame()
 {
 	lock_guard<mutex> lockguard(_mutex);
-	if (_users.size() == 1)
+	if (_users.size() == 2)
 	{
 		InitGame();
 
@@ -47,13 +51,6 @@ bool GameRoom::StartGame()
 
 		_startGame.store(true);
 
-
-		/*Protocol::S_MATCHING_GAME pkt;
-		pkt.set_success(true);
-		auto newSendBuf = ClientPacketHandler::SerializePacket(pkt, PKT_S_MATCHING_GAME);*/
-
-		//Broadcast(newSendBuf);
-		
 	}
 
 

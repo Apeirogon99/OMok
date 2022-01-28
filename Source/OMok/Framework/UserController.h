@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include <OMok/Widget/W_Lobby.h>
 #include "UserController.generated.h"
 
 /**
@@ -22,5 +23,5 @@ public:
 	void ShowLobbyWidget();
 
 public:
-	TSubclassOf<class UW_Lobby> W_Lobby;
+	UW_Lobby* _Lobby;
 };

@@ -8,6 +8,7 @@
 #include <OMok/Framework/BattlePlayerState.h>
 #include <OMok/Framework/UserController.h>
 #include <OMok/ProtoFiles/Protocol.pb.h>
+#include <OMok/OMokGameInstance.h>
 
 struct PacketHeader
 {
@@ -66,8 +67,8 @@ public:
 	static TArray<BYTE> MakeSendBuffer(Protocol::C_ENTER_GAME& pkt) { return EncodePacket(pkt, PacketId::PKT_C_ENTER_GAME); }
 	static TArray<BYTE> MakeSendBuffer(Protocol::C_LEAVE_GAME& pkt) { return EncodePacket(pkt, PacketId::PKT_C_LEAVE_GAME); }
 	static TArray<BYTE> MakeSendBuffer(Protocol::C_NEXT_TURN& pkt) { return EncodePacket(pkt, PacketId::PKT_C_NEXT_TURN); }
-	static TArray<BYTE> MakeSendBuffer(Protocol::C_MATCHING_GAME& pkt) { return EncodePacket(pkt, PacketId::PKT_C_NEXT_TURN); }
-	static TArray<BYTE> MakeSendBuffer(Protocol::C_CHAT_LOBBY& pkt) { return EncodePacket(pkt, PacketId::PKT_C_NEXT_TURN); }
+	static TArray<BYTE> MakeSendBuffer(Protocol::C_MATCHING_GAME& pkt) { return EncodePacket(pkt, PacketId::PKT_C_MATCHING_GAME); }
+	static TArray<BYTE> MakeSendBuffer(Protocol::C_CHAT_LOBBY& pkt) { return EncodePacket(pkt, PacketId::PKT_C_CHAT_LOOBY); }
 
 	template<typename ProtoType>
 	static TArray<BYTE> EncodePacket(ProtoType& pkt, PacketId id)

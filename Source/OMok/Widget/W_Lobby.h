@@ -37,7 +37,7 @@ protected:
 	UPROPERTY(Meta = (BindWidget))
 	class UButton*		_btn_setting;
 
-	UPROPERTY(Meta = (BindWidget))
+	UPROPERTY(BlueprintReadWrite, Meta = (BindWidget))
 	class UScrollBox*	_SB_chatBox;
 
 	UPROPERTY(Meta = (BindWidget))
@@ -60,12 +60,12 @@ public:
 	void Click_setting();
 
 	UFUNCTION()
-	void Update_chatBox(const FText& NickName, const FText& text);
+	void Update_chatBox(FText& NickName, FText& text);
 
 	UFUNCTION()
 	void Committed_Chat(const FText& message, ETextCommit::Type commitType);
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
 	TSubclassOf<class UW_ChatMessage> W_ChatMessage;
-	TArray<UW_ChatMessage*> _ChatLog;
 };

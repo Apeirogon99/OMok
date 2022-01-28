@@ -883,13 +883,13 @@ class C_MATCHING_GAME final :
   enum : int {
     kPlayerIdFieldNumber = 1,
   };
-  // bool playerId = 1;
+  // int64 playerId = 1;
   void clear_playerid();
-  bool playerid() const;
-  void set_playerid(bool value);
+  int64_t playerid() const;
+  void set_playerid(int64_t value);
   private:
-  bool _internal_playerid() const;
-  void _internal_set_playerid(bool value);
+  int64_t _internal_playerid() const;
+  void _internal_set_playerid(int64_t value);
   public:
 
   // @@protoc_insertion_point(class_scope:Protocol.C_MATCHING_GAME)
@@ -899,7 +899,7 @@ class C_MATCHING_GAME final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  bool playerid_;
+  int64_t playerid_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -2357,22 +2357,22 @@ inline void S_ENTER_GMAE::set_delaytime(int64_t value) {
 
 // C_MATCHING_GAME
 
-// bool playerId = 1;
+// int64 playerId = 1;
 inline void C_MATCHING_GAME::clear_playerid() {
-  playerid_ = false;
+  playerid_ = int64_t{0};
 }
-inline bool C_MATCHING_GAME::_internal_playerid() const {
+inline int64_t C_MATCHING_GAME::_internal_playerid() const {
   return playerid_;
 }
-inline bool C_MATCHING_GAME::playerid() const {
+inline int64_t C_MATCHING_GAME::playerid() const {
   // @@protoc_insertion_point(field_get:Protocol.C_MATCHING_GAME.playerId)
   return _internal_playerid();
 }
-inline void C_MATCHING_GAME::_internal_set_playerid(bool value) {
+inline void C_MATCHING_GAME::_internal_set_playerid(int64_t value) {
   
   playerid_ = value;
 }
-inline void C_MATCHING_GAME::set_playerid(bool value) {
+inline void C_MATCHING_GAME::set_playerid(int64_t value) {
   _internal_set_playerid(value);
   // @@protoc_insertion_point(field_set:Protocol.C_MATCHING_GAME.playerId)
 }

@@ -32,3 +32,11 @@ void ABattleGameMode::BeginPlay()
 
 	PacketHandle::Init(GetWorld());
 }
+
+void ABattleGameMode::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+	auto player = Cast<AUserController>(NewPlayer);
+	player->ShowLobbyWidget();
+	player->SetShowMouseCursor(true);
+}

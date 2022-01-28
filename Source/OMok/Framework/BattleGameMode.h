@@ -19,6 +19,7 @@ public:
 	virtual ~ABattleGameMode();
 
 	virtual void BeginPlay() override;
+	virtual void PostLogin(APlayerController* NewPlayer) override;
 
 public:
 	class NetworkCore* _networkCore;

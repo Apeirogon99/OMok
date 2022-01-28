@@ -29,10 +29,13 @@ protected:
 	class UTextBlock* _TB_Message;
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (ExposeOnSpawn = true))
-	FText _nickName;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (ExposeOnSpawn = true))
-	FText _message;
 
+	UFUNCTION()
+	void InitMessageBox(FText NickName, FText text);
+
+	//UPROPERTY(BlueprintReadWrite, Meta = (ExposeOnSpawn = "true"))
+	FText _nickName;
+
+	//UPROPERTY(BlueprintReadWrite, Meta = (ExposeOnSpawn = "true"))
+	FText _message;
 };

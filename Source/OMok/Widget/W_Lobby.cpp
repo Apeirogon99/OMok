@@ -10,6 +10,7 @@
 #include <Blueprint/WidgetBlueprintLibrary.h>
 #include <OMok/Widget/W_ChatMessage.h>
 #include "Kismet/GameplayStatics.h"
+#include <Async/Async.h>
 
 void UW_Lobby::NativeConstruct()
 {
@@ -27,7 +28,7 @@ void UW_Lobby::NativeConstruct()
 	_ET_chat				= Cast<UEditableTextBox>(GetWidgetFromName(TEXT("_ET_chat")));
 
 	//ConstructorHelper
-	W_ChatMessage = LoadClass<UW_ChatMessage>(NULL, TEXT("UserWidget'/Game/Widget/BW_ChatMessage.BW_ChatMessage_C'"));
+	//W_ChatMessage = LoadClass<UW_ChatMessage>(NULL, TEXT("UserWidget'/Game/Widget/BW_ChatMessage.BW_ChatMessage_C'"));
 
 	//UScrollBox
 	
@@ -70,10 +71,15 @@ void UW_Lobby::NativeConstruct()
 
 void UW_Lobby::Click_startOnlineMatch()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Click_startOnlineMatch"));
 	//TODO : Start Match Game Packet
-	//Protocol::S_MATCHING_GAME pkt;
-	//PacketHandle::MakeSendBuffer(pkt);
+	UE_LOG(LogTemp, Warning, TEXT("Click_startOnlineMatch"));
+	auto gameInstance = GetWorld()->GetGameInstance<UOMokGameInstance>();
+	if (gameInstance)
+	{
+		Protocol::C_MATCHING_GAME pkt;
+		pkt.set_playerid(gameInstance->_playerId);
+		PacketHandle::MakeSendBuffer(pkt);
+	}
 }
 
 void UW_Lobby::Click_endOlineMatch()
@@ -99,41 +105,49 @@ void UW_Lobby::Click_setting()
 	UE_LOG(LogTemp, Warning, TEXT("Click_setting"));
 }
 
-void UW_Lobby::Update_chatBox(const FText& NickName, const FText& text)
+void UW_Lobby::Update_chatBox(FText& NickName, FText& text)
 {
 	//TODO : Create Chat Message Widget
-	UW_ChatMessage* message = CreateWidget<UW_ChatMessage>(this, W_ChatMessage);
-	if(message != nullptr)
-	{
-		message->_nickName = NickName;
-		message->_message = text;
-		_SB_chatBox->AddChild(message);
-		_SB_chatBox->ScrollToEnd();
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("message == nullptr"));
-	}
+	AsyncTask(ENamedThreads::GameThread, [=]()
+		{
+			if (W_ChatMessage)
+			{
+				UW_ChatMessage* message = CreateWidget<UW_ChatMessage>(this, W_ChatMessage);
+				if (message != nullptr)
+				{
+					message->InitMessageBox(NickName, text);
+					_SB_chatBox->AddChild(message);
+					_SB_chatBox->ScrollToEnd();
+				}
+				else
+				{
+					UE_LOG(LogTemp, Warning, TEXT("message == nullptr"));
 
+				}
+			}
+		});	
 }
 
 void UW_Lobby::Committed_Chat(const FText& message, ETextCommit::Type commitType)
 {
 	if (ETextCommit::Type::OnEnter == commitType)
 	{
-		std::string outMessage = std::string(TCHAR_TO_ANSI(*message.ToString()));
-
-		//TODO : Make Send Chat Packet
-		Protocol::C_CHAT_LOBBY pkt;
-		//pkt.set_playerid(1);
-		//pkt.set_playernickname("hong");
-		pkt.set_message(outMessage);
-		PacketHandle::MakeSendBuffer(pkt);
-
+		std::string outMessage = std::string(TCHAR_TO_UTF8(*message.ToString()));
+		int strlHex = strtoul(outMessage.c_str(), 0, 16);
+		auto gameInstance = GetWorld()->GetGameInstance<UOMokGameInstance>();
+		if (gameInstance)
+		{
+			//TODO : Make Send Chat Packet
+			Protocol::C_CHAT_LOBBY pkt;
+			pkt.set_playerid(gameInstance->_playerId);
+			pkt.set_playernickname(std::string(TCHAR_TO_UTF8(*gameInstance->_nickName)));
+			pkt.set_message(outMessage);
+			PacketHandle::MakeSendBuffer(pkt);
+		}
 
 		_ET_chat->SetText(FText::FromString(FString(TEXT(""))));
 
-		APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
+		APlayerController* PC = GetWorld()->GetFirstPlayerController();
 		UWidgetBlueprintLibrary::SetInputMode_GameAndUI(PC, _ET_chat);
 	}
 }
