@@ -85,8 +85,6 @@ bool Handle_S_LOGIN(Protocol::S_LOGIN& dpkt)
 
 bool Handle_S_ENTER_GAME(Protocol::S_ENTER_GMAE& dpkt)
 {
-    //들어왔는지 확인
-    //성공적으로 대기열에 들어옴
     UE_LOG(LogTemp, Warning, TEXT("Handle_C_ENTER_GAME"));
     
     return true;
@@ -94,7 +92,6 @@ bool Handle_S_ENTER_GAME(Protocol::S_ENTER_GMAE& dpkt)
 
 bool Handle_S_LEAVE_GAME(Protocol::S_LEAVE_GAME& dpkt)
 {
-    //매칭잡히기 전에 빠짐
     UE_LOG(LogTemp, Warning, TEXT("Handle_C_LEAVE_GAME"));
     
     return true;
@@ -102,7 +99,6 @@ bool Handle_S_LEAVE_GAME(Protocol::S_LEAVE_GAME& dpkt)
 
 bool Handle_S_NEXT_TURN(Protocol::S_NEXT_TURN& dpkt)
 {
-    //보드판에 렌더링
     UE_LOG(LogTemp, Warning, TEXT("Handle_S_NEXT_TURN"));
     
     return false;
