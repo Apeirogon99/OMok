@@ -16,19 +16,28 @@ AOmak_Actor::AOmak_Actor()
 	{
 		Omak_Mesh->SetStaticMesh(Omak_Mesh_Data.Object);
 	}
+
+	RootComponent=Omak_Mesh;
 }
 
 // Called when the game starts or when spawned
 void AOmak_Actor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	Material = Omak_Mesh->GetMaterial(0);
+	DynamicMaterial = UMaterialInstanceDynamic::Create(Material,this);
+	Omak_Mesh->SetMaterial(0,DynamicMaterial);
+	DynamicMaterial->SetScalarParameterValue(TEXT("Opacity"),0.3f);
 }
 
 // Called every frame
 void AOmak_Actor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
+UMaterialInstanceDynamic* AOmak_Actor::GetMaterial_Dynamic()
+{
+	return DynamicMaterial;
+}

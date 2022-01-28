@@ -11,17 +11,18 @@ ABoard::ABoard()
 	
 	Floor_Part = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Board"));
 
-	ConstructorHelpers::FObjectFinder<UStaticMesh> Floor_Part_Mesh(TEXT("/Game/Client/Actor/floor.floor"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> Floor_Part_Mesh(TEXT("/Game/Client/Actor/floor.floor"));
 	if (Floor_Part_Mesh.Succeeded())
 	{
 		Floor_Part->SetStaticMesh(Floor_Part_Mesh.Object);
 	}
+
+	RootComponent=Floor_Part;
 	
-	for (int PosX = 0; PosX < 15; PosX++)
-	{
-		for (int PosY = 0; PosY < 15; PosY++)
-		{
-			SpawnPoint[PosX][PosY] = FVector2D(PosX*100.f, PosY*100.f);
-		}
-	}
+	Board_Arr.Init(0,225);
+}
+
+void ABoard::SetBoard_Array(const int X, const int Y)
+{
+	//RemoveAt이용
 }
