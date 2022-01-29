@@ -26,3 +26,13 @@ void ABoard::SetBoard_Array(const int X, const int Y)
 {
 	//RemoveAt이용
 }
+
+void ABoard::Print_OMok(const int x, const int y, const int64 team, const int64 playerid)
+{
+	AOmak_Actor* Spawn_Omak_Actor = GetWorld()->SpawnActor<AOmak_Actor>(AOmak_Actor::StaticClass(), FVector(x, y, 0.f), FRotator(0, 0, 0));
+	UMaterialInstanceDynamic* Spawn_Omak_Material = Spawn_Omak_Actor->GetMaterial_Dynamic();
+	Spawn_Omak_Material->SetScalarParameterValue(TEXT("Opacity"), 1.f);
+
+	SetBoard_Array(x, y);
+	
+}

@@ -17,4 +17,10 @@ ABattleGameState::~ABattleGameState()
 void ABattleGameState::BeginPlay()
 {
 	Super::BeginPlay();
+
+
+	TSubclassOf<AActor> Board_Actor;
+	UGameplayStatics::GetActorOfClass(GetWorld(), Board_Actor);
+	Omak_Board = Cast<ABoard>(Board_Actor);
+
 }

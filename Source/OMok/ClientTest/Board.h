@@ -21,6 +21,7 @@ private:
 
 public:
 	void SetBoard_Array(const int X, const int Y);
+	void Print_OMok(const int x, const int y, const int64 team, const int64 playerid)
 		
 private:
 	//Using Board Arr

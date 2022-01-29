@@ -7,6 +7,7 @@
 
 #include "UserController.h"
 #include "Kismet/GameplayStatics.h"
+#include <OMok/Server/PacketHandle.h>
 
 // Sets default values
 AUserPawn::AUserPawn()
@@ -36,10 +37,6 @@ void AUserPawn::BeginPlay()
 	Super::BeginPlay();
 
 	SpawnActor = GetWorld()->SpawnActor<AOmak_Actor>(AOmak_Actor::StaticClass(),FVector(750,750,-100),FRotator(0,0,0));
-
-	TSubclassOf<AActor> Board_Actor;
-	UGameplayStatics::GetActorOfClass(GetWorld(),Board_Actor);
-	Omak_Board = Cast<ABoard>(Board_Actor);
 }
 
 // Called every frame
@@ -77,15 +74,24 @@ void AUserPawn::Click()
 		FVector Loc = TraceHitResult.Location;
 		const float VecX=floor(Loc.X/100.f)*100.f+50.f;
 		const float VecY=floor(Loc.Y/100.f)*100.f+50.f;
-		AOmak_Actor* Spawn_Omak_Actor = GetWorld()->SpawnActor<AOmak_Actor>(AOmak_Actor::StaticClass(),FVector(VecX,VecY,0.f),FRotator(0,0,0));
-		UMaterialInstanceDynamic* Spawn_Omak_Material = Spawn_Omak_Actor->GetMaterial_Dynamic();
-		Spawn_Omak_Material->SetScalarParameterValue(TEXT("Opacity"),1.f);
 
 		const int x=floor((Loc.X)/100.f);
 		const int y=floor((Loc.Y)/100.f);
 		
-		GEngine->AddOnScreenDebugMessage(-1,5.f,FColor::Red,FString::Printf(TEXT("x : %d, y : %d"),x,y));
-		
-		Omak_Board->SetBoard_Array(x,y);
+		//GEngine->AddOnScreenDebugMessage(-1,5.f,FColor::Red,FString::Printf(TEXT("x : %d, y : %d"),x,y));
+
+		auto gameinstance  = Cast<UOMokGameInstance>(GetWorld()->GetGameInstance());
+		if (gameinstance)
+		{
+			Protocol::C_NEXT_TURN pkt;
+			pkt.set_posx(x);
+			pkt.set_posy(y);
+			pkt.set_team(1);
+			pkt.set_playerid(gameinstance->_playerId);
+		}
+	
+
+
+		//Omak_Board->SetBoard_Array(x,y);
 	}
 }

@@ -29,9 +29,6 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* CameraArm;
-
-	UPROPERTY(VisibleAnywhere)
-	ABoard* Omak_Board;
 		
 protected:
 	// Called when the game starts or when spawned

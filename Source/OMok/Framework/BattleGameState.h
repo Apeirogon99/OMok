@@ -22,4 +22,8 @@ public:
 	virtual void BeginPlay() override;
 
 public:
+	UPROPERTY(VisibleAnywhere)
+	ABoard* Omak_Board;
+
+public:
 };
